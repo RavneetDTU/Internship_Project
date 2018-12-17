@@ -2,6 +2,7 @@ package com.example.ravneet.vision;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
-import android.Manifest.permission.*;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;

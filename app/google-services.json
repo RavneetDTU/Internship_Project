@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "951391948642",
+    "firebase_url": "https://vision-48e1d.firebaseio.com",
+    "project_id": "vision-48e1d",
+    "storage_bucket": "vision-48e1d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951391948642:android:4e53c637cab9d15a",
+        "android_client_info": {
+          "package_name": "com.example.ravneet.vision"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951391948642-flvocq8lrdqhsp3qo0dsgkrgrlacdicm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ravneet.vision",
+            "certificate_hash": "3ed589992c451b792fcd35bd9eed4753a85dde17"
+          }
+        },
+        {
+          "client_id": "951391948642-4eo2tkv34gb2kspov6jqc75f306objnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3knS8TeCGiwyz-wrYoSiulO7DcoVNn6Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951391948642-4eo2tkv34gb2kspov6jqc75f306objnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
