@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "fasle";
 
-    private Button btn_scan, btn_set;
+    private Button btn_scan, btn_set, btn_seeAllData;
     private EditText et_name, et_rno;
     private TextView tv_result;
     public static final int REQUEST_CODE = 101;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Main");
 
+        btn_seeAllData = findViewById(R.id.btn_seeAllData);
         btn_scan = findViewById(R.id.btn_MainActivity_Scan);
         tv_result = findViewById(R.id.tv_resultText);
         btn_set = findViewById(R.id.btn_MainActivity_set);
@@ -56,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, ScanActivity.class);
 
                 startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+
+        btn_seeAllData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ListActivity.class));
             }
         });
     }
