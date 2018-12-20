@@ -31,7 +31,9 @@ import java.util.ArrayList;
             for(DataSnapshot dataSnapshotchild : dataSnapshot.getChildren()){
                 ItemDetails thisItem = new ItemDetails(dataSnapshotchild.child("code").getValue().toString(),
                         dataSnapshotchild.child("name").getValue().toString(),
-                        dataSnapshotchild.child("rno").getValue().toString());
+                        dataSnapshotchild.child("rno").getValue().toString(),
+                        dataSnapshotchild.child("date").getValue().toString(),
+                        (Boolean)dataSnapshotchild.child("returned").getValue());
                 itemDetails.add(thisItem);
             }
             progressBar.setVisibility(ProgressBar.GONE);

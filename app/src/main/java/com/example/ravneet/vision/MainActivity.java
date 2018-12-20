@@ -19,6 +19,9 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "fasle";
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int PERMISSION_REQUEST = 102;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         btn_set = findViewById(R.id.btn_MainActivity_set);
         et_name = findViewById(R.id.et_MainActivity_Name);
         et_rno = findViewById(R.id.et_MainActivity_rno);
+
+        currentDate = DateFormat.getDateTimeInstance().format(new Date());
+
         tv_result.setText("");
 
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_DENIED){
@@ -80,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!name.equals("") && !rno.equals("")){
 
-                    final ItemDetails details = new ItemDetails(barcode.displayValue,name,rno);
+                    final ItemDetails details = new ItemDetails(barcode.displayValue,name,rno, currentDate, false );
                     btn_set.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

@@ -1,15 +1,20 @@
 package com.example.ravneet.vision.Pojo;
 
-public class ItemDetails {
+public class
+ItemDetails {
 
     String code;
     String name;
     String rno;
+    String date;
+    Boolean returned;
 
-    public ItemDetails(String code, String name, String rno) {
+    public ItemDetails(String code, String name, String rno, String date, Boolean returned) {
         this.code = code;
         this.name = name;
         this.rno = rno;
+        this.date = date;
+        this.returned = returned;
     }
 
     public String getCode() {
@@ -22,6 +27,22 @@ public class ItemDetails {
 
     public String getName() {
         return name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        date = date;
+    }
+
+    public Boolean getReturned() {
+        return returned;
+    }
+
+    public void setReturned(Boolean returned) {
+        this.returned = returned;
     }
 
     public void setName(String name) {

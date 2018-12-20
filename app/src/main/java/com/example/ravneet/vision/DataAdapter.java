@@ -1,11 +1,13 @@
 package com.example.ravneet.vision;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,15 @@ public class DataAdapter extends RecyclerView.Adapter<AdapterViewHolder> {
         holder.tv_item.setText(thisItem.getCode());
         holder.tv_name.setText(thisItem.getName());
         holder.tv_rno.setText(thisItem.getRno());
+        holder.datetime.setText(thisItem.getDate());
+
+        boolean value = thisItem.getReturned();
+        if(value == false){
+            holder.btn_revived.setText("Not Returned");
+            holder.btn_revived.setBackgroundColor(Color.RED);
+        }if(value == true){
+            holder.btn_revived.setBackgroundColor(Color.GREEN);
+        }
 
     }
 
@@ -58,12 +69,15 @@ public class DataAdapter extends RecyclerView.Adapter<AdapterViewHolder> {
 
 class AdapterViewHolder extends RecyclerView.ViewHolder{
 
-    TextView tv_item, tv_name, tv_rno;
+    TextView tv_item, tv_name, tv_rno, datetime;
+    Button btn_revived;
 
     public AdapterViewHolder(@NonNull View itemView) {
         super(itemView);
         tv_item = itemView.findViewById(R.id.tv_listItem_ItemType);
         tv_name = itemView.findViewById(R.id.tv_listItem_name);
         tv_rno = itemView.findViewById(R.id.tv_listItem_rno);
+        datetime = itemView.findViewById(R.id.tv_date);
+        btn_revived = itemView.findViewById(R.id.btn_returned);
     }
 }
