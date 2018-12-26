@@ -37,6 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Code"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:textStyle="bold"
                 android:textSize="20dp"/>
 
@@ -51,6 +53,13 @@
                 android:hint="R.NO"
                 android:id="@+id/et_MainActivity_rno"/>
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mobile Number"
+                android:id="@+id/et_mobileNumber"
+                android:inputType="phone"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,8 +73,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_seeAllData"
-        android:text="See ALl Data"
-        android:layout_marginTop="50dp"/>
+        android:id="@+id/btn_singleList"
+        android:text="Single Data"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_signout"
+        android:text="Signout"/>
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.ravneet.vision;
+package com.example.ravneet.vision.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ravneet.vision.Pojo.ItemDetails;
+import com.example.ravneet.vision.R;
 
 import java.util.ArrayList;
 
@@ -28,6 +28,10 @@ public class DataAdapter extends RecyclerView.Adapter<AdapterViewHolder> {
     public void updateAdapter(ArrayList<ItemDetails> arrayList){
         this.itemDetailsArrayList = arrayList;
         notifyDataSetChanged();
+    }
+
+    public ItemDetails getItemAt(int position){
+        return itemDetailsArrayList.get(position);
     }
 
     @NonNull
@@ -47,13 +51,21 @@ public class DataAdapter extends RecyclerView.Adapter<AdapterViewHolder> {
         holder.tv_rno.setText(thisItem.getRno());
         holder.datetime.setText(thisItem.getDate());
 
-        boolean value = thisItem.getReturned();
-        if(value == false){
-            holder.btn_revived.setText("Not Returned");
-            holder.btn_revived.setBackgroundColor(Color.RED);
-        }if(value == true){
-            holder.btn_revived.setBackgroundColor(Color.GREEN);
-        }
+//        boolean value = thisItem.getReturned();
+//        if(value == false){
+//            holder.btn_revived.setText("Not Returned");
+//            holder.btn_revived.setBackgroundColor(Color.RED);
+//        }if(value == true){
+//            holder.btn_revived.setText("Returned");
+//            holder.btn_revived.setBackgroundColor(Color.GREEN);
+//        }
+        holder.btn_revived.setText(thisItem.getMbno());
+//        holder.btn_revived.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
     }
 

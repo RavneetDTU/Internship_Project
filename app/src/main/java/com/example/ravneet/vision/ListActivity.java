@@ -5,13 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.ravneet.vision.Adapter.DataAdapter;
 import com.example.ravneet.vision.Pojo.ItemDetails;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -33,7 +37,9 @@ import java.util.ArrayList;
                         dataSnapshotchild.child("name").getValue().toString(),
                         dataSnapshotchild.child("rno").getValue().toString(),
                         dataSnapshotchild.child("date").getValue().toString(),
-                        (Boolean)dataSnapshotchild.child("returned").getValue());
+                        (Boolean)dataSnapshotchild.child("returned").getValue(),
+                        dataSnapshotchild.child("id").getValue().toString(),
+                        dataSnapshotchild.child("mbno").getValue().toString());
                 itemDetails.add(thisItem);
             }
             progressBar.setVisibility(ProgressBar.GONE);
@@ -54,17 +60,38 @@ import java.util.ArrayList;
 
         progressBar = findViewById(R.id.progressBar_ListActivity);
 
+        String heading = getIntent().getStringExtra("head");
+
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("Main");
+        databaseReference = firebaseDatabase.getReference();
+
+        Query query = databaseReference.child("Main").orderByChild("code").equalTo(heading);
+        query.addListenerForSingleValueEvent(valueEventListener);
 
         recyclerView = findViewById(R.id.rv_listActivity);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dataAdapter = new DataAdapter(this, new ArrayList<ItemDetails>());
         recyclerView.setAdapter(dataAdapter);
 
-        databaseReference.addValueEventListener(valueEventListener);
+        //databaseReference.addValueEventListener(valueEventListener);
+
 
         progressBar.setVisibility(ProgressBar.VISIBLE);
+
+//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+//                ItemDetails seletedItem = dataAdapter.getItemAt(viewHolder.getAdapterPosition());
+//                seletedItem.setReturned(true);
+//                databaseReference.child("Main").child(seletedItem.getCode()+seletedItem.getDate()).setValue(seletedItem);
+//                Toast.makeText(ListActivity.this, "Item returned", Toast.LENGTH_SHORT).show();
+//            }
+//        }).attachToRecyclerView(recyclerView);
 
     }
 }
