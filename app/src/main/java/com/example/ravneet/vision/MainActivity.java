@@ -1,13 +1,17 @@
 package com.example.ravneet.vision;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_name, et_rno, et_mbo;
     private TextView tv_result;
     public static final int REQUEST_CODE = 101;
-    public static final int PERMISSION_REQUEST = 102;
+    public static final int CAMERA_PERMISSION_REQUEST = 102;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private DatabaseReference listref;
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
-                    Toast.makeText(MainActivity.this, "User Signed In", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "User Signed In", Toast.LENGTH_SHORT).show();
                 }else{
                     startActivityForResult(
                             AuthUI.getInstance()
@@ -102,16 +106,19 @@ public class MainActivity extends AppCompatActivity {
 
         tv_result.setText("");
 
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(MainActivity.this, new String[] {android.Manifest.permission.CAMERA}, PERMISSION_REQUEST);
-        }
-
         btn_scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
 
-                startActivityForResult(intent, REQUEST_CODE);
+                if(ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                    // Permission Granted......start Activity
+                    Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE);
+
+                }else {
+                    requestPermission();
+                }
             }
         });
 
@@ -136,32 +143,32 @@ public class MainActivity extends AppCompatActivity {
                 final Barcode barcode = data.getParcelableExtra("barcode");
                 Log.d(TAG, data.toString());
                 tv_result.setText(barcode.displayValue);
-                final String name = et_name.getText().toString();
-                String rno = et_rno.getText().toString();
-                String str_mno = et_mbo.getText().toString();
-
-                if(!name.equals("") && !rno.equals("")){
-
                     final String id = myRef.push().getKey();
 
-                    final ItemDetails details = new ItemDetails(barcode.displayValue,name,rno, currentDate, false, id, str_mno );
-                    final ListObject listObject = new ListObject(barcode.displayValue);
                     btn_set.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            listref.child(barcode.displayValue).setValue(listObject);
-                            myRef.child(id).setValue(details);
-                            et_name.setText("");
-                            et_rno.setText("");
-                            tv_result.setText("");
-                            et_mbo.setText("");
-                            Toast.makeText(MainActivity.this, "Sending Data", Toast.LENGTH_SHORT).show();
+
+                            if(!TextUtils.isEmpty(et_name.getText()) && !TextUtils.isEmpty(et_rno.getText()) && !TextUtils.isEmpty(et_mbo.getText())){
+                                String name = et_name.getText().toString();
+                                String rno = et_rno.getText().toString();
+                                String str_mno = et_mbo.getText().toString();
+
+                                ItemDetails details = new ItemDetails(barcode.displayValue,name,rno, currentDate, false, id, str_mno );
+                                ListObject listObject = new ListObject(id,barcode.displayValue);
+
+                                listref.child(barcode.displayValue).setValue(listObject);
+                                myRef.child(id).setValue(details);
+                                et_name.setText("");
+                                et_rno.setText("");
+                                tv_result.setText("");
+                                et_mbo.setText("");
+                                Toast.makeText(MainActivity.this, "Sending Data", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(MainActivity.this, "All fields are compulsory", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
-                }else{
-                    Toast.makeText(MainActivity.this, "Fields shouldn't be empty", Toast.LENGTH_SHORT).show();
-                }
-
             }
         }
     }
@@ -188,5 +195,41 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    public void requestPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+            // Here we will show why camera permission is important
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission Needed")
+                    .setMessage("Camera permission is required, else you won't be able to scan QR Codes")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+                        }
+                    }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                }
+            }).create().show();
+        }else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CAMERA_PERMISSION_REQUEST){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // Start Scan Activity
+                startActivity(new Intent(MainActivity.this, ScanActivity.class));
+            }
+            else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

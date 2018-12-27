@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_MainActivity_set"
-                android:text="Set"/>
+                android:text="Issue Device"/>
 
         </LinearLayout>
 
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btn_singleList"
-        android:text="Single Data"/>
+        android:text="All Devices"/>
 
     <Button
         android:layout_width="match_parent"

@@ -11,4 +11,13 @@
         android:layout_height="match_parent"
         android:id="@+id/rv_singleListActivity"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar_SingleListActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="220dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

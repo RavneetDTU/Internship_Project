@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 
 import com.example.ravneet.vision.Adapter.OnItemClickListner;
 import com.example.ravneet.vision.Adapter.SingleListAdapter;
@@ -23,6 +24,7 @@ public class SingleListActivity extends AppCompatActivity {
 
     private SingleListAdapter listAdapter;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -33,10 +35,12 @@ public class SingleListActivity extends AppCompatActivity {
             ArrayList<ListObject> listObjects = new ArrayList<>();
 
             for(DataSnapshot dataSnapshotchild : dataSnapshot.getChildren()){
-                ListObject thisObject = new ListObject(dataSnapshotchild.child("heading").getValue().toString());
+                ListObject thisObject = new ListObject(dataSnapshotchild.child("uid").getValue().toString()
+                        ,dataSnapshotchild.child("heading").getValue().toString());
                 listObjects.add(thisObject);
             }
             listAdapter.updateList(listObjects);
+            progressBar.setVisibility(ProgressBar.GONE);
         }
 
         @Override
@@ -49,6 +53,8 @@ public class SingleListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_list);
+        progressBar = findViewById(R.id.progressBar_SingleListActivity);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("List");

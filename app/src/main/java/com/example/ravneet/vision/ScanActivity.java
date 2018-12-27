@@ -1,5 +1,6 @@
 package com.example.ravneet.vision;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Parcelable;
@@ -54,7 +55,7 @@ public class ScanActivity extends AppCompatActivity {
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
 
-                    if(ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                    if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                         cameraSource.start(cameraView.getHolder());
                     }
                 }catch (IOException e){
