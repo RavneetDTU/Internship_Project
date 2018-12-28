@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.ravneet.vision.Adapter.DataAdapter;
 import com.example.ravneet.vision.Pojo.ItemDetails;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +27,10 @@ import java.util.Date;
 
     private RecyclerView recyclerView;
     private DataAdapter dataAdapter;
-     private String retDate;
+    private String retDate;
+
+    private FirebaseAuth firebaseAuth;
+    private String user_email;
 
     private ProgressBar progressBar;
     private FirebaseDatabase firebaseDatabase;
@@ -64,6 +68,9 @@ import java.util.Date;
 
         progressBar = findViewById(R.id.progressBar_ListActivity);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        user_email = firebaseAuth.getCurrentUser().getEmail().toLowerCase();
+
         String heading = getIntent().getStringExtra("head");
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -81,22 +88,28 @@ import java.util.Date;
 
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                return false;
-            }
+        if(user_email.equals("ravneet.dtu@gmail.com") || user_email.equals("dtulanslab@gmail.com")){
 
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                retDate = DateFormat.getDateTimeInstance().format(new Date());
-                ItemDetails seletedItem = dataAdapter.getItemAt(viewHolder.getAdapterPosition());
-                seletedItem.setReturned(true);
-                seletedItem.setReturnDate(retDate);
-                databaseReference.child("Main").child(seletedItem.getId()).setValue(seletedItem);
-                Toast.makeText(ListActivity.this, "Item returned", Toast.LENGTH_SHORT).show();
-            }
-        }).attachToRecyclerView(recyclerView);
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                    retDate = DateFormat.getDateTimeInstance().format(new Date());
+                    ItemDetails seletedItem = dataAdapter.getItemAt(viewHolder.getAdapterPosition());
+                    seletedItem.setReturned(true);
+                    seletedItem.setReturnDate(retDate);
+                    databaseReference.child("Main").child(seletedItem.getId()).setValue(seletedItem);
+                    Toast.makeText(ListActivity.this, "Item returned", Toast.LENGTH_SHORT).show();
+                }
+            }).attachToRecyclerView(recyclerView);
+
+        }
+
+
 
     }
 }
