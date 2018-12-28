@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
         et_mbo = findViewById(R.id.et_mobileNumber);
 
 
-        currentDate = DateFormat.getDateTimeInstance().format(new Date());
-
         tv_result.setText("");
 
         btn_scan.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
                 final Barcode barcode = data.getParcelableExtra("barcode");
                 Log.d(TAG, data.toString());
                 tv_result.setText(barcode.displayValue);
-                    final String id = myRef.push().getKey();
+                final String id = myRef.push().getKey();
+                currentDate = DateFormat.getDateTimeInstance().format(new Date());
 
                     btn_set.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                                 String rno = et_rno.getText().toString();
                                 String str_mno = et_mbo.getText().toString();
 
-                                ItemDetails details = new ItemDetails(barcode.displayValue,name,rno, currentDate, false, id, str_mno );
+                                ItemDetails details = new ItemDetails(id,str_mno,barcode.displayValue,name,rno,currentDate,"",false);
                                 ListObject listObject = new ListObject(id,barcode.displayValue);
 
                                 listref.child(barcode.displayValue).setValue(listObject);

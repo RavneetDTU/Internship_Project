@@ -18,12 +18,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
  public class ListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private DataAdapter dataAdapter;
+     private String retDate;
 
     private ProgressBar progressBar;
     private FirebaseDatabase firebaseDatabase;
@@ -33,13 +36,14 @@ import java.util.ArrayList;
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             ArrayList<ItemDetails> itemDetails = new ArrayList<>();
             for(DataSnapshot dataSnapshotchild : dataSnapshot.getChildren()){
-                ItemDetails thisItem = new ItemDetails(dataSnapshotchild.child("code").getValue().toString(),
+                ItemDetails thisItem = new ItemDetails(dataSnapshotchild.child("id").getValue().toString(),
+                        dataSnapshotchild.child("mbno").getValue().toString(),
+                        dataSnapshotchild.child("code").getValue().toString(),
                         dataSnapshotchild.child("name").getValue().toString(),
                         dataSnapshotchild.child("rno").getValue().toString(),
-                        dataSnapshotchild.child("date").getValue().toString(),
-                        (Boolean)dataSnapshotchild.child("returned").getValue(),
-                        dataSnapshotchild.child("id").getValue().toString(),
-                        dataSnapshotchild.child("mbno").getValue().toString());
+                        dataSnapshotchild.child("issueDate").getValue().toString(),
+                        dataSnapshotchild.child("returnDate").getValue().toString(),
+                        (Boolean)dataSnapshotchild.child("returned").getValue());
                 itemDetails.add(thisItem);
             }
             progressBar.setVisibility(ProgressBar.GONE);
@@ -75,23 +79,24 @@ import java.util.ArrayList;
 
         //databaseReference.addValueEventListener(valueEventListener);
 
-
         progressBar.setVisibility(ProgressBar.VISIBLE);
 
-//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-//                ItemDetails seletedItem = dataAdapter.getItemAt(viewHolder.getAdapterPosition());
-//                seletedItem.setReturned(true);
-//                databaseReference.child("Main").child(seletedItem.getCode()+seletedItem.getDate()).setValue(seletedItem);
-//                Toast.makeText(ListActivity.this, "Item returned", Toast.LENGTH_SHORT).show();
-//            }
-//        }).attachToRecyclerView(recyclerView);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                retDate = DateFormat.getDateTimeInstance().format(new Date());
+                ItemDetails seletedItem = dataAdapter.getItemAt(viewHolder.getAdapterPosition());
+                seletedItem.setReturned(true);
+                seletedItem.setReturnDate(retDate);
+                databaseReference.child("Main").child(seletedItem.getId()).setValue(seletedItem);
+                Toast.makeText(ListActivity.this, "Item returned", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
 
     }
 }

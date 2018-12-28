@@ -47,19 +47,20 @@ public class DataAdapter extends RecyclerView.Adapter<AdapterViewHolder> {
         final ItemDetails thisItem = itemDetailsArrayList.get(i);
 
         holder.tv_item.setText(thisItem.getCode());
-        holder.tv_name.setText(thisItem.getName());
-        holder.tv_rno.setText(thisItem.getRno());
-        holder.datetime.setText(thisItem.getDate());
+        holder.tv_name.setText("Name: "+thisItem.getName());
+        holder.tv_rno.setText("R.No: "+thisItem.getRno());
 
-//        boolean value = thisItem.getReturned();
-//        if(value == false){
-//            holder.btn_revived.setText("Not Returned");
-//            holder.btn_revived.setBackgroundColor(Color.RED);
-//        }if(value == true){
-//            holder.btn_revived.setText("Returned");
-//            holder.btn_revived.setBackgroundColor(Color.GREEN);
-//        }
-        holder.btn_revived.setText(thisItem.getMbno());
+        boolean value = thisItem.getReturned();
+        if(value == false){
+            //holder.btn_revived.setText("Not Returned");
+            holder.btn_revived.setBackgroundColor(Color.RED);
+            holder.datetime.setText("Issue Date: "+thisItem.getIssueDate());
+        }if(value == true){
+            //holder.btn_revived.setText("Returned");
+            holder.datetime.setText("Return Date: "+thisItem.getReturnDate());
+            holder.btn_revived.setBackgroundColor(Color.GREEN);
+        }
+        holder.btn_revived.setText("Ph: "+thisItem.getMbno());
 //        holder.btn_revived.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

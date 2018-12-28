@@ -8,8 +8,20 @@ ItemDetails {
     String code;
     String name;
     String rno;
-    String date;
+    String issueDate;
+    String returnDate;
     Boolean returned;
+
+    public ItemDetails(String id, String mbno, String code, String name, String rno, String issueDate, String returnDate, Boolean returned) {
+        this.id = id;
+        this.mbno = mbno;
+        this.code = code;
+        this.name = name;
+        this.rno = rno;
+        this.issueDate = issueDate;
+        this.returnDate = returnDate;
+        this.returned = returned;
+    }
 
     public String getId() {
         return id;
@@ -27,17 +39,6 @@ ItemDetails {
         this.mbno = mbno;
     }
 
-    public ItemDetails(String code, String name, String rno, String date, Boolean returned, String id, String mbno) {
-        this.code = code;
-        this.name = name;
-        this.rno = rno;
-        this.date = date;
-        this.id = id;
-        this.mbno = mbno;
-        this.returned = returned;
-
-    }
-
     public String getCode() {
         return code;
     }
@@ -50,22 +51,6 @@ ItemDetails {
         return name;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        date = date;
-    }
-
-    public Boolean getReturned() {
-        return returned;
-    }
-
-    public void setReturned(Boolean returned) {
-        this.returned = returned;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -76,5 +61,29 @@ ItemDetails {
 
     public void setRno(String rno) {
         this.rno = rno;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
+    }
+
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public Boolean getReturned() {
+        return returned;
+    }
+
+    public void setReturned(Boolean returned) {
+        this.returned = returned;
     }
 }
